@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Carrito de compras</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/products"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Lista de productos en el carrito -->
+  <ion-list *ngIf="items.length > 0 && !showForm; else emptyOrForm">
+    <ion-item *ngFor="let item of items">
+      <ion-thumbnail slot="start">
+        <img [src]="item.product.imageUrl || 'assets/placeholder.svg'" />
+      </ion-thumbnail>
+
+      <ion-label>
+        <h2>{{ item.product.title }}</h2>
+        <p>{{ item.product.description }}</p>
+        <p><strong>${{ item.product.price }} x {{ item.quantity }}</strong></p>
+      </ion-label>
+
+      <ion-input type="number" min="1" [(ngModel)]="item.quantity"
+                 (ionBlur)="updateQuantity(item, item.quantity)">
+      </ion-input>
+
+      <ion-button fill="clear" color="danger" (click)="remove(item.product.id)">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><strong>Total a pagar</strong></ion-label>
+      <ion-note slot="end"><strong>${{ total }}</strong></ion-note>
+    </ion-item>
+
+    <!-- Botón para agregar más productos -->
+    <ion-button expand="block" color="primary" (click)="goToProducts()">
+      Agregar más productos
+    </ion-button>
+
+    <!-- Cambiamos a mostrar formulario -->
+    <ion-button expand="block" color="success" (click)="checkout()">
+      Finalizar compra
+    </ion-button>
+  </ion-list>
+
+  <!-- Template vacío o formulario -->
+  <ng-template #emptyOrForm>
+    <ng-container *ngIf="showForm; else empty">
+      <!-- Resumen de compra -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Resumen de tu compra</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item *ngFor="let item of items">
+            <ion-thumbnail slot="start">
+              <img [src]="item.product.imageUrl || 'assets/placeholder.svg'" />
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ item.product.title }}</h2>
+              <p>{{ item.product.description }}</p>
+              <p><strong>{{ item.quantity }} x ${{ item.product.price }}</strong></p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label><strong>Total a pagar</strong></ion-label>
+            <ion-note slot="end"><strong>${{ total }}</strong></ion-note>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Formulario de datos de envío -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Datos de envío</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label position="floating">Nombre completo</ion-label>
+            <ion-input [(ngModel)]="checkoutData.name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Cédula</ion-label>
+            <ion-input type="number" [(ngModel)]="checkoutData.cedula"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Dirección de envío</ion-label>
+            <ion-input [(ngModel)]="checkoutData.address"></ion-input>
+  
+             <!-- Botón de geolocalización mejorado -->
+            <ion-button slot="end" color="tertiary" (click)="getLocation()">
+            <ion-icon slot="start" name="pin-outline"></ion-icon>
+            Usar mi ubicación
+            </ion-button>
+          </ion-item>
+
+          <ion-button expand="block" color="primary" (click)="confirmPurchase()">
+            Confirmar compra
+          </ion-button>
+
+          <ion-button expand="block" fill="outline" color="medium" (click)="showForm=false">
+            Cancelar
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #empty>
+    <p>Tu carrito está vacío.</p>
+  </ng-template>
+
+</ion-content>

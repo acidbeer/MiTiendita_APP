@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Productos</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button *ngIf="auth.isAdmin()" [routerLink]="['/admin']">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Nuevo
+      </ion-button>
+
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Cerrar sesión
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let p of products; trackBy: trackById" [routerLink]="['/product', p.id]">
+      <ion-thumbnail slot="start">
+        <img [src]="imageSrc(p)" (error)="onImgError($event)" />
+      </ion-thumbnail>
+
+      <ion-label>
+        <h2>{{ p.title }}</h2>
+        <p>{{ p.description }}</p>
+        <strong>${{ p.price }}</strong>
+      </ion-label>
+
+      <!-- Acciones inline -->
+      <ng-container *ngIf="auth.isAdmin(); else userActions">
+        <ion-buttons slot="end">
+          <ion-button fill="clear" color="primary"
+                      (click)= "$event.preventDefault(); $event.stopPropagation(); edit(p)">
+            <ion-icon name="create-outline"></ion-icon>
+            Editar
+          </ion-button>
+
+          <ion-button fill="clear" color="danger"
+                      (click)="$event.preventDefault(); $event.stopPropagation(); confirmDelete(p)">
+            <ion-icon name="trash-outline"></ion-icon>
+            Eliminar
+          </ion-button>
+        </ion-buttons>
+      </ng-container>
+
+      <ng-template #userActions>
+        <ion-button slot="end"
+                    (click)="$event.preventDefault(); $event.stopPropagation(); add(p)">
+          Agregar
+        </ion-button>
+      </ng-template>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ editing ? 'Editar producto' : 'Administrar productos' }}</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/products"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        Cerrar sesión
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <ion-list lines="full">
+
+      <ion-item>
+        <ion-input label="Título" labelPlacement="floating" formControlName="title"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea label="Descripción" labelPlacement="floating" formControlName="description" autoGrow="true"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-input type="number" inputmode="decimal" min="0"
+                   label="Precio" labelPlacement="floating"
+                   formControlName="price"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="URL de imagen (opcional)"
+          labelPlacement="floating"
+          formControlName="imageUrl"
+          (ionBlur)="onImageUrlBlur()">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <input type="file" accept="image/*" (change)="onFileChange($event)">
+      </ion-item>
+
+      <div class="ion-padding" *ngIf="true">
+        <img [src]="preview || 'assets/placeholder.svg'"
+             (error)="onImgError($event)"
+             style="max-width:100%; max-height:240px; object-fit:contain; border-radius:8px;" />
+      </div>
+
+    </ion-list>
+
+    <ion-button expand="block" class="ion-margin-top" type="submit" [disabled]="form.invalid || isSaving">
+      {{ editing ? 'Guardar cambios' : 'Crear producto' }}
+    </ion-button>
+
+    <ion-button *ngIf="editing"
+                expand="block"
+                color="danger"
+                fill="outline"
+                class="ion-margin-top"
+                (click)="confirmDelete()">
+      Eliminar
+    </ion-button>
+  </form>
+</ion-content>

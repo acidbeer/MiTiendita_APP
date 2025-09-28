@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ product?.title }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/products"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="product">
+  <div class="product-detail">
+    <img [src]="imageSrc(product)" alt="{{ product.title }}" style="max-width:100%; border-radius:8px;"/>
+
+    <h2>{{ product.title }}</h2>
+    <p>{{ product.description }}</p>
+    <h3><strong>${{ product.price }}</strong></h3>
+
+    <ion-button expand="block" color="primary" (click)="addToCart(product)">
+      Agregar al carrito
+    </ion-button>
+
+    <ion-button expand="block" color="success" (click)="buyNow(product)">
+      Comprar ahora
+    </ion-button>
+  </div>
+</ion-content>

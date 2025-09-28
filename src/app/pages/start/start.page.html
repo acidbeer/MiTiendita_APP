@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Bienvenido</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding start">
+  <div class="logo">
+    <!-- Tu logo si quieres -->
+    <ion-icon name="storefront-outline" size="large"></ion-icon>
+  </div>
+
+  <h2 class="ion-text-center">Tiendita</h2>
+  <p class="ion-text-center ion-margin-bottom">
+    Crea tu cuenta o inicia sesión para continuar
+  </p>
+
+  <ion-button expand="block" routerLink="/register">Crear cuenta</ion-button>
+  <ion-button expand="block" fill="outline" routerLink="/login">Iniciar sesión</ion-button>
+
+  <ion-item lines="none" class="ion-margin-top" routerLink="/products">
+    <ion-label class="ion-text-center">Entrar como invitado</ion-label>
+  </ion-item>
+</ion-content>
