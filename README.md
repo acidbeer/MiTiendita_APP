@@ -26,4 +26,4 @@ La app incluye autenticación de usuarios (correo/contraseña y Google), manejo 
 
 📄 Licencia
 
-MIT © 2025 - Tu nombre
+MIT © 2025 - Miguel Angel Tapiero Puentes
